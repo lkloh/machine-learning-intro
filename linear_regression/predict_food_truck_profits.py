@@ -18,6 +18,32 @@ def load_data(filename):
         dependent_vars[i] = float(chunks[1])
     return [independent_vars, dependent_vars]
 
+def plot_data(independent_vars, dependent_vars):
+    fig = make_subplots(
+        rows=1,
+        cols=1,
+        x_title="Population",
+    )
+    fig.update_layout(title="Profit against Population")
+
+    fig.append_trace(
+        plotly_go.Scatter(
+            x=independent_vars,
+            y=dependent_vars,
+            name="Profit against Population",
+            mode="markers",
+        ),
+        row=1,
+        col=1,
+    )
+    fig.update_yaxes(title_text="Profit in $10,000", row=1, col=1)
+
+    fig.write_html("predict_food_truck_prices.html")
+
+
 if __name__ == "__main__":
     [independent_vars, dependent_vars] = load_data("./instructions/ex1data1.txt")
-    print(independent_vars)
+    plot_data(independent_vars, dependent_vars)
+
+
+
