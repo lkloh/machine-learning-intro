@@ -49,8 +49,7 @@ if __name__ == "__main__":
 
     theta = np.zeros(shape=(2, 1))
     J = compute_cost(X, y, theta)
-
-    print(J)
+    print("Cost function is %f" % (J))
 
 
 
