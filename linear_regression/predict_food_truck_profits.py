@@ -4,7 +4,11 @@ import numpy as np
 import random
 from plotly.subplots import make_subplots
 import plotly.graph_objects as plotly_go
-from compute_cost import compute_cost
+from compute_cost import calc_cost
+import gradient_descent
+
+ALPHA = 0.01
+NUM_ITERATIONS = 1500
 
 def load_data(filename):
     file = open(filename, 'r')
@@ -41,6 +45,28 @@ def plot_data(independent_vars, dependent_vars):
 
     fig.write_html("predict_food_truck_prices.html")
 
+def plot_cost_function(iterations, cost_function):
+    fig = make_subplots(
+        rows=1,
+        cols=1,
+        x_title="Population",
+    )
+    fig.update_layout(title="Cost function against number of iterations")
+
+    fig.append_trace(
+        plotly_go.Scatter(
+            x=iterations,
+            y=cost_function,
+            name="Cost function against number of iterations",
+            mode="markers",
+        ),
+        row=1,
+        col=1,
+    )
+    fig.update_yaxes(title_text="Cost function", row=1, col=1)
+
+    fig.write_html("cost_function_against_number_of_iterations.html")
+
 
 if __name__ == "__main__":
     [X, y] = load_data("./instructions/ex1data1.txt")
@@ -48,8 +74,23 @@ if __name__ == "__main__":
     plot_data(X, y)
 
     theta = np.zeros(shape=(2, 1))
-    J = compute_cost(X, y, theta)
-    print("Cost function is %f" % (J))
+    J = calc_cost(X, y, theta)
+    print("Cost function when theta is [%f, %f] is %f" % (theta[0], theta[1], J))
+
+    J = calc_cost(X, y, [-1, 2])
+    print("Cost function when theta is [%f, %f] is %f" % (theta[0], theta[1], J))
+
+    [cost_function_history, theta] = gradient_descent.calc_gradient_descent(X, y, theta, ALPHA, NUM_ITERATIONS)
+    iterations = [i for i in range(1, NUM_ITERATIONS + 1)]
+    plot_cost_function(iterations, cost_function_history)
+    print("Theta found by gradient descent: [%f, %f]" %  (theta[0], theta[1]))
+
+
+
+
+
+
+
 
 
 

@@ -9,7 +9,7 @@ def calc_hypothesis(x, theta):
 Computes the cost of using theta as the parameter for linear regression 
 to fit the data points in X and y
 '''
-def compute_cost(X, y, theta):
+def calc_cost(X, y, theta):
     # number of training examples
     m = len(y)
 
