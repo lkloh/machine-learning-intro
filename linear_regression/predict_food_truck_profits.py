@@ -4,6 +4,7 @@ import numpy as np
 import random
 from plotly.subplots import make_subplots
 import plotly.graph_objects as plotly_go
+from compute_cost import compute_cost
 
 def load_data(filename):
     file = open(filename, 'r')
@@ -42,8 +43,14 @@ def plot_data(independent_vars, dependent_vars):
 
 
 if __name__ == "__main__":
-    [independent_vars, dependent_vars] = load_data("./instructions/ex1data1.txt")
-    plot_data(independent_vars, dependent_vars)
+    [X, y] = load_data("./instructions/ex1data1.txt")
+
+    plot_data(X, y)
+
+    theta = np.zeros(shape=(2, 1))
+    J = compute_cost(X, y, theta)
+
+    print(J)
 
 
 
