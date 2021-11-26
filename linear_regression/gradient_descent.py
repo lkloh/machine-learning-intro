@@ -21,7 +21,8 @@ def calc_gradient_descent(X, y, theta, alpha, num_iterations):
             for training_idx in range(m):
                 xi = X[training_idx]
                 yi = y[training_idx]
-                sum += (compute_cost.calc_hypothesis(xi, theta) - yi) * xi
+                hypothesis = compute_cost.calc_hypothesis(xi, theta)
+                sum += (hypothesis - yi) * xi
 
             factor = alpha * (1.0 / m)
             theta[feature_idx] = theta[feature_idx] - factor * sum

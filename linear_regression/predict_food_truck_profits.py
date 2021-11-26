@@ -101,8 +101,11 @@ if __name__ == "__main__":
     J = calc_cost(X, y, theta)
     print("Cost function when theta is [%f, %f] is %f" % (theta[0], theta[1], J))
 
+    theta_test = np.zeros(shape=(2, 1))
+    theta_test[0] = -1
+    theta_test[1] = 2
     J = calc_cost(X, y, [-1, 2])
-    print("Cost function when theta is [%f, %f] is %f" % (-1, 2, J))
+    print("Cost function when theta is [%f, %f] is %f" % (theta_test[0], theta_test[1], J))
 
     [
         cost_function_history,
