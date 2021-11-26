@@ -3,6 +3,7 @@ import numpy as np
 import math
 import compute_cost
 
+
 def calc_gradient_descent(X, y, theta, alpha, num_iterations):
     # num training examples
     m = len(y)
@@ -22,7 +23,8 @@ def calc_gradient_descent(X, y, theta, alpha, num_iterations):
                 yi = y[training_idx]
                 sum += (compute_cost.calc_hypothesis(xi, theta) - yi) * xi
 
-            theta[feature_idx] = theta[feature_idx] - alpha * (1.0 / m) * sum
+            factor = alpha * (1.0 / m)
+            theta[feature_idx] = theta[feature_idx] - factor * sum
 
         cost_function_history[iteration_count] = compute_cost.calc_cost(X, y, theta)
 
