@@ -110,7 +110,7 @@ def visualize_cost_function_against_params(X, y):
 
 
 if __name__ == "__main__":
-    [X, y] = load_data("./instructions/ex1data1.txt")
+    [X, y] = load_data("../instructions/ex1data1.txt")
 
     plot_data(X, y, "price_against_population")
 

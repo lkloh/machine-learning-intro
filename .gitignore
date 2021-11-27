@@ -1,4 +1,4 @@
-.DS_Store
+**/.DS_Store
 .idea/
-*/*.html
-*/__pycache__
+**/*.html
+**/__pycache__
