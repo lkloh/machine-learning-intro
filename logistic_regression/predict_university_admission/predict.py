@@ -79,10 +79,7 @@ def sigmoid(z):
 
 
 def calc_hypothesis(theta, x):
-    num_features = len(x)
-    z = theta[0]
-    for i in range(num_features):
-        z += theta[i + 1] * x[i]
+    z = np.dot(theta, x)
     return sigmoid(z)
 
 
@@ -120,7 +117,11 @@ def cost_function(theta, X, Y):
 
 if __name__ == "__main__":
     [X, Y] = load_data("../assignment/ex2data1.txt")
+    (num_samples, num_features) = X.shape
     visualize_data(X, Y)
+
+    # Add intercept term to X
+    X = np.c_[np.ones(shape=(num_samples,1)), X]
 
     print("sigmoid(-99) = %f" % sigmoid(-99))
     print("sigmoid(0) = %f" % sigmoid(0))
