@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 import math
 
 ALPHA = 0.01
-NUM_ITERATIONS = 400
+NUM_ITERATIONS = 90
 
 
 def load_data(filename):
@@ -45,6 +45,29 @@ def plot_price_vs_feature(x, y, feature):
     fig.update_yaxes(title_text="Price of house", row=1, col=1)
 
     fig.write_html("price_of_house_vs_" + feature + ".html")
+
+
+def plot_cost_vs_iterations(iterations, cost):
+    fig = make_subplots(
+        rows=1,
+        cols=1,
+        x_title="iterations",
+    )
+    fig.update_layout(title="Cost vs iterations")
+
+    fig.append_trace(
+        go.Scatter(
+            x=iterations,
+            y=cost,
+            name="Cost",
+            mode="markers",
+        ),
+        row=1,
+        col=1,
+    )
+    fig.update_yaxes(title_text="Cost vs iterations", row=1, col=1)
+
+    fig.write_html("cost_vs_iterations.html")
 
 
 """
@@ -87,7 +110,7 @@ def compute_cost(X, y, theta):
         xi = X[i]
         yi = y[i]
         h = calc_hypothesis(xi, theta)
-        sum += math.pow((h - yi), 2)
+        sum += math.pow(h - yi, 2)
 
     return factor * sum
 
@@ -130,4 +153,4 @@ if __name__ == "__main__":
         normalized_X, y, initial_theta, ALPHA, NUM_ITERATIONS
     )
 
-    print(J_history)
+    plot_cost_vs_iterations(iteration_history, J_history)
