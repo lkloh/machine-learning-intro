@@ -71,12 +71,12 @@ def visualize_data(X, Y, optimized_theta=None):
 
         exam2_min_score = (
             -1
-            * ( optimized_theta[0] + optimized_theta[1] * exam1_decision_score[0])
+            * (optimized_theta[0] + optimized_theta[1] * exam1_decision_score[0])
             / optimized_theta[2]
         )
         exam2_max_score = (
             -1
-            * ( optimized_theta[0] + optimized_theta[1] * exam1_decision_score[1])
+            * (optimized_theta[0] + optimized_theta[1] * exam1_decision_score[1])
             / optimized_theta[2]
         )
         exam2_decision_score = np.array([exam2_min_score, exam2_max_score])
@@ -157,13 +157,26 @@ def calc_gradient(theta, X, Y):
 
 
 def prediction_accuracy(X, Y, optimal_theta):
-    pass
+    num_samples = len(Y)
+
+    num_correct_predictions = 0
+    for sample_idx in range(num_samples):
+        xi = X[sample_idx]
+        h = np.dot(optimal_theta, xi)
+        prediction = True if h >= 0.5 else False
+        if prediction == Y[sample_idx]:
+            num_correct_predictions += 1
+
+    return float(num_correct_predictions) / num_samples
+
 
 def singular_prediction(optimal_theta):
     x = np.array([1, 45, 85])
     h = calc_hypothesis(optimal_theta, x)
-    print("Probability of admission of student with exam 1 scoreof 45 and exam 2 score of 85: ", h)
-
+    print(
+        "Probability of admission of student with exam 1 scoreof 45 and exam 2 score of 85: ",
+        h,
+    )
 
 
 if __name__ == "__main__":
@@ -195,4 +208,5 @@ if __name__ == "__main__":
     visualize_data(X, Y, optimal_theta)
 
     singular_prediction(optimal_theta)
-    prediction_accuracy(X, Y, optimal_theta)
+    accuracy = prediction_accuracy(X, Y, optimal_theta)
+    print("Prediction accuracy: ", accuracy)
