@@ -4,6 +4,7 @@ import numpy as np
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import math
+import scipy.optimize as optimize
 
 ALPHA = 0.01
 NUM_ITERATIONS = 1500
@@ -84,11 +85,11 @@ def calc_hypothesis(theta, x):
 
 
 """
-Compute cost and gradient for logistic regression
+Compute cost for logistic regression
 """
 
 
-def cost_function(theta, X, Y):
+def calc_cost_func(theta, X, Y):
     (num_samples, num_factors) = X.shape
 
     cost_factor = 1.0 / num_samples
@@ -99,10 +100,19 @@ def cost_function(theta, X, Y):
         h = calc_hypothesis(theta, xi)
         cost_sum -= yi * math.log(h)
         cost_sum -= (1 - yi) * math.log(1 - h)
-    J = cost_factor * cost_sum
+    return cost_factor * cost_sum
 
-    gradient_factor = 1.0 / num_samples
+
+"""
+Compute gradient for logistic regression
+"""
+
+
+def calc_gradient(theta, X, Y):
+    (num_samples, num_factors) = X.shape
+
     gradient = np.zeros(num_factors)
+    gradient_factor = 1.0 / num_samples
     for factor_idx in range(num_factors):
         gradient_sum = 0
         for sample_idx in range(num_samples):
@@ -111,8 +121,7 @@ def cost_function(theta, X, Y):
             h = calc_hypothesis(theta, xi)
             gradient_sum += (h - yi) * xi[factor_idx]
         gradient[factor_idx] = gradient_factor * gradient_sum
-
-    return [J, gradient]
+    return gradient
 
 
 if __name__ == "__main__":
@@ -121,12 +130,21 @@ if __name__ == "__main__":
     visualize_data(X, Y)
 
     # Add intercept term to X
-    X = np.c_[np.ones(shape=(num_samples,1)), X]
+    X = np.c_[np.ones(shape=(num_samples, 1)), X]
 
     print("sigmoid(-99) = %f" % sigmoid(-99))
     print("sigmoid(0) = %f" % sigmoid(0))
     print("sigmoid(99) = %f" % sigmoid(99))
 
     initial_theta = np.zeros(3)
-    [J, gradient] = cost_function(initial_theta, X, Y)
-    print("Cost from initial theta: %f" % J)
+    initial_J = calc_cost_func(initial_theta, X, Y)
+    print("Cost from initial theta: %f" % initial_J)
+
+    result = optimize.minimize(
+        fun=calc_cost_func,
+        x0=initial_theta,
+        args=(X, Y),
+        method="TNC",
+        jac=calc_gradient,
+    )
+    print(result)
