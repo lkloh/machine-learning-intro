@@ -3,6 +3,7 @@
 import numpy as np
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
+import math
 
 ALPHA = 0.01
 NUM_ITERATIONS = 1500
@@ -63,6 +64,22 @@ def visualize_data(X, Y):
     fig.write_html("admitted_and_rejected_visualization.html")
 
 
+"""
+          1
+g(x) = -------
+            -z
+       1 + e
+"""
+
+
+def sigmoid(z):
+    return 1.0 / (1.0 + math.exp(-1.0 * z))
+
+
 if __name__ == "__main__":
     [X, Y] = load_data("../assignment/ex2data1.txt")
     visualize_data(X, Y)
+
+    print("sigmoid(-99) = %f" % sigmoid(-99))
+    print("sigmoid(0) = %f" % sigmoid(0))
+    print("sigmoid(99) = %f" % sigmoid(99))
