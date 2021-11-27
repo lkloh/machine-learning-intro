@@ -4,7 +4,7 @@ import numpy as np
 import random
 from plotly.subplots import make_subplots
 import plotly.graph_objects as plotly_go
-from compute_cost import calc_cost
+import compute_cost
 import gradient_descent
 
 ALPHA = 0.01
@@ -92,13 +92,22 @@ def plot_cost_function(iterations, cost_function):
     fig.write_html("cost_function_against_number_of_iterations.html")
 
 
-def handle_3d(X, y):
+def visualize_cost_function_against_params(X, y):
     theta0_vals = np.linspace(-10, 10, 100)
     theta1_vals = np.linspace(-1, 4, 100)
 
-    
+    J_vals = np.zeros(shape=(len(theta0_vals), len(theta1_vals)))
+    for i in range(len(theta0_vals)):
+        for j in range(len(theta1_vals)):
+            theta = [theta0_vals[i], theta1_vals[j]]
+            J_vals[i, j] = compute_cost.calc_cost(X, y, theta)
 
-    print(theta0_vals)
+    # Plot 3D surface plot
+    fig = plotly_go.Figure(data=[plotly_go.Surface(z=J_vals)])
+    # fig.update_yaxes(title_text="Cost function", row=1, col=1)
+    fig.update_layout(title="Cost function against parameters")
+    fig.write_html("cost_function_against_parameters.html")
+
 
 if __name__ == "__main__":
     [X, y] = load_data("./instructions/ex1data1.txt")
@@ -106,14 +115,16 @@ if __name__ == "__main__":
     plot_data(X, y, "price_against_population")
 
     theta = np.zeros(shape=(2, 1))
-    J = calc_cost(X, y, theta)
+    J = compute_cost.calc_cost(X, y, theta)
     print("Cost function when theta is [%f, %f] is %f" % (theta[0], theta[1], J))
 
     theta_test = np.zeros(shape=(2, 1))
     theta_test[0] = -1
     theta_test[1] = 2
-    J = calc_cost(X, y, [-1, 2])
-    print("Cost function when theta is [%f, %f] is %f" % (theta_test[0], theta_test[1], J))
+    J = compute_cost.calc_cost(X, y, [-1, 2])
+    print(
+        "Cost function when theta is [%f, %f] is %f" % (theta_test[0], theta_test[1], J)
+    )
 
     [
         cost_function_history,
@@ -130,4 +141,4 @@ if __name__ == "__main__":
         X, y, "price_against_population_linear_regression", gradient_descent_theta
     )
 
-    handle_3d(X, y)
+    visualize_cost_function_against_params(X, y)
