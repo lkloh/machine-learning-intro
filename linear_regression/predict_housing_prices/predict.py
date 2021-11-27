@@ -154,3 +154,9 @@ if __name__ == "__main__":
     )
 
     plot_cost_vs_iterations(iteration_history, J_history)
+
+    print("Estimated cost of a 1650 sq-ft, 3 br house:")
+    normalized_sq_ft = (1650 - mu[0]) / sigma[0]
+    normalized_br_size = (3 - mu[1]) / sigma[1]
+    estimated_price = calc_hypothesis([normalized_sq_ft, normalized_br_size], optimized_theta)
+    print("$ %f" % round(estimated_price, 2))
