@@ -25,7 +25,7 @@ def load_data(filename):
     return [X, Y]
 
 
-def visualize_data(X, Y):
+def visualize_data(X, Y, optimized_theta=None):
     X_admitted = X[Y]
 
     Y_rejected = np.invert(Y)
@@ -48,7 +48,6 @@ def visualize_data(X, Y):
         row=1,
         col=1,
     )
-
     fig.append_trace(
         go.Scatter(
             x=X_rejected[:, 0],
@@ -59,8 +58,10 @@ def visualize_data(X, Y):
         row=1,
         col=1,
     )
-
     fig.update_yaxes(title_text="Exam 2 Score", row=1, col=1)
+
+    if optimized_theta is not None:
+        pass
 
     fig.write_html("admitted_and_rejected_visualization.html")
 
@@ -147,4 +148,7 @@ if __name__ == "__main__":
         method="TNC",
         jac=calc_gradient,
     )
-    print(result)
+    optimal_theta = result.x
+    print("optimal theta is: ", optimal_theta, ", and cost is: ", result.fun)
+
+    visualize_data(X, Y, optimal_theta)
