@@ -92,6 +92,14 @@ def plot_cost_function(iterations, cost_function):
     fig.write_html("cost_function_against_number_of_iterations.html")
 
 
+def handle_3d(X, y):
+    theta0_vals = np.linspace(-10, 10, 100)
+    theta1_vals = np.linspace(-1, 4, 100)
+
+    
+
+    print(theta0_vals)
+
 if __name__ == "__main__":
     [X, y] = load_data("./instructions/ex1data1.txt")
 
@@ -121,3 +129,5 @@ if __name__ == "__main__":
     plot_data(
         X, y, "price_against_population_linear_regression", gradient_descent_theta
     )
+
+    handle_3d(X, y)
