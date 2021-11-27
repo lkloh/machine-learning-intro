@@ -40,8 +40,8 @@ def visualize_data(X, Y, optimized_theta=None):
 
     fig.append_trace(
         go.Scatter(
-            x=X_admitted[:, 0],
-            y=X_admitted[:, 1],
+            x=X_admitted[:, 1],
+            y=X_admitted[:, 2],
             name="Admitted",
             mode="markers",
         ),
@@ -50,8 +50,8 @@ def visualize_data(X, Y, optimized_theta=None):
     )
     fig.append_trace(
         go.Scatter(
-            x=X_rejected[:, 0],
-            y=X_rejected[:, 1],
+            x=X_rejected[:, 1],
+            y=X_rejected[:, 2],
             name="Rejected",
             mode="markers",
         ),
@@ -61,36 +61,69 @@ def visualize_data(X, Y, optimized_theta=None):
     fig.update_yaxes(title_text="Exam 2 Score", row=1, col=1)
 
     if optimized_theta is not None:
-        pass
+        # hypothesis = theta[0] + theta[1] * exam1 + theta[2] * exam2
+        # Setting hypothesis=0 implies
+        #         -theta[0] - theta[1] * exam1
+        # exam2 = ----------------------------
+        #                   theta[2]
+        exam1_decision_score = np.array([min(X[:, 1]) - 2, max(X[:, 1]) + 2])
+        print(exam1_decision_score)
 
-    fig.write_html("admitted_and_rejected_visualization.html")
+        exam2_min_score = (
+            -1
+            * (optimized_theta[0] + optimized_theta[1] * exam1_decision_score[0])
+            / optimized_theta[2]
+        )
+        exam2_max_score = (
+            -1
+            * (optimized_theta[0] + optimized_theta[1] * exam1_decision_score[1])
+            / optimized_theta[2]
+        )
+        exam2_decision_score = np.array([exam2_min_score, exam2_max_score])
 
+        fig.append_trace(
+            go.Scatter(
+                x=exam1_decision_score,
+                y=exam2_decision_score,
+                name="Decision Boundary",
+                mode="lines",
+            ),
+            row=1,
+            col=1,
+        )
 
-"""
-Logistic regression hypothesis is:
-h_theta(x) = g(theta^T x)
-          1
-g(x) = -------
-            -z
-       1 + e
-"""
+    fig.write_html("admit_decision_boundary.html")
 
 
 def sigmoid(z):
+    """
+    Logistic regression hypothesis is:
+    h_theta(x) = g(theta^T x)
+              1
+    g(x) = -------
+                -z
+           1 + e
+    """
     return 1.0 / (1.0 + math.exp(-1.0 * z))
 
 
 def calc_hypothesis(theta, x):
+    """
+    Logistic regression hypothesis is:
+    h_theta(x) = g(theta^T x)
+              1
+    g(x) = -------
+                -z
+           1 + e
+    """
     z = np.dot(theta, x)
     return sigmoid(z)
 
 
-"""
-Compute cost for logistic regression
-"""
-
-
 def calc_cost_func(theta, X, Y):
+    """
+    Compute cost for logistic regression
+    """
     (num_samples, num_factors) = X.shape
 
     cost_factor = 1.0 / num_samples
@@ -104,12 +137,10 @@ def calc_cost_func(theta, X, Y):
     return cost_factor * cost_sum
 
 
-"""
-Compute gradient for logistic regression
-"""
-
-
 def calc_gradient(theta, X, Y):
+    """
+    Compute gradient for logistic regression
+    """
     (num_samples, num_factors) = X.shape
 
     gradient = np.zeros(num_factors)
@@ -127,11 +158,11 @@ def calc_gradient(theta, X, Y):
 
 if __name__ == "__main__":
     [X, Y] = load_data("../assignment/ex2data1.txt")
-    (num_samples, num_features) = X.shape
-    visualize_data(X, Y)
-
+    (num_samples, _) = X.shape
     # Add intercept term to X
     X = np.c_[np.ones(shape=(num_samples, 1)), X]
+
+    visualize_data(X, Y)
 
     print("sigmoid(-99) = %f" % sigmoid(-99))
     print("sigmoid(0) = %f" % sigmoid(0))
