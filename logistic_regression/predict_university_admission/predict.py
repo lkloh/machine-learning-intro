@@ -71,12 +71,12 @@ def visualize_data(X, Y, optimized_theta=None):
 
         exam2_min_score = (
             -1
-            * (optimized_theta[0] + optimized_theta[1] * exam1_decision_score[0])
+            * ( optimized_theta[0] + optimized_theta[1] * exam1_decision_score[0])
             / optimized_theta[2]
         )
         exam2_max_score = (
             -1
-            * (optimized_theta[0] + optimized_theta[1] * exam1_decision_score[1])
+            * ( optimized_theta[0] + optimized_theta[1] * exam1_decision_score[1])
             / optimized_theta[2]
         )
         exam2_decision_score = np.array([exam2_min_score, exam2_max_score])
@@ -156,6 +156,16 @@ def calc_gradient(theta, X, Y):
     return gradient
 
 
+def prediction_accuracy(X, Y, optimal_theta):
+    pass
+
+def singular_prediction(optimal_theta):
+    x = np.array([1, 45, 85])
+    h = calc_hypothesis(optimal_theta, x)
+    print("Probability of admission of student with exam 1 scoreof 45 and exam 2 score of 85: ", h)
+
+
+
 if __name__ == "__main__":
     [X, Y] = load_data("../assignment/ex2data1.txt")
     (num_samples, _) = X.shape
@@ -183,3 +193,6 @@ if __name__ == "__main__":
     print("optimal theta is: ", optimal_theta, ", and cost is: ", result.fun)
 
     visualize_data(X, Y, optimal_theta)
+
+    singular_prediction(optimal_theta)
+    prediction_accuracy(X, Y, optimal_theta)
