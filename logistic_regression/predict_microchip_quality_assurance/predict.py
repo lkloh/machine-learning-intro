@@ -63,7 +63,53 @@ def visualize_data(X, Y):
     fig.write_html("microchip_qa_visualization.html")
 
 
+def map_features(X1, X2):
+    """
+    Feature mapping function to polynomial features.
+
+    `map_features(X1, X2)` maps the two input features to quadratic features.
+    Returns a new feature array with more features, comprising of:
+    1 (added to handle the intercept term)
+    X1
+    X2
+    X1^2
+    X2^2
+    X1 * X2
+    X1 * X2^2
+    ...
+    X1 * X2^5
+    X2^6
+    """
+    if len(X1) != len(X2):
+        assert "len(X1) != len(X2)"
+
+    degree = 6
+    num_features = 28
+    num_samples = len(X1)
+
+    output = np.ones(shape=(num_samples, num_features))
+    for sample_idx in range(num_samples):
+        feature_index = 1
+        xx1 = X1[sample_idx]
+        xx2 = X2[sample_idx]
+        for i in range(1, degree + 1):
+            for j in range(0, i + 1):
+                output[sample_idx, feature_index] = math.pow(xx1, i - j) * math.pow(
+                    xx2, j
+                )
+                feature_index += 1
+    return output
+
+
+def cost_function(theta, X, Y, lambda_):
+    pass
+
+
 if __name__ == "__main__":
     [X, Y] = load_data("../assignment/ex2data2.txt")
 
     visualize_data(X, Y)
+
+    mapped_X = map_features(X[:, 0], X[:, 1])
+
+    print(mapped_X)
