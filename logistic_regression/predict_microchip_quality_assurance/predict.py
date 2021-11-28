@@ -25,7 +25,6 @@ def load_data(filename):
     return [X, Y]
 
 
-
 def visualize_data(X, Y):
     X_admitted = X[Y]
 
@@ -41,8 +40,8 @@ def visualize_data(X, Y):
 
     fig.append_trace(
         go.Scatter(
-            x=X_admitted[:, 1],
-            y=X_admitted[:, 2],
+            x=X_admitted[:, 0],
+            y=X_admitted[:, 1],
             name="Admitted",
             mode="markers",
         ),
@@ -51,8 +50,8 @@ def visualize_data(X, Y):
     )
     fig.append_trace(
         go.Scatter(
-            x=X_rejected[:, 1],
-            y=X_rejected[:, 2],
+            x=X_rejected[:, 0],
+            y=X_rejected[:, 1],
             name="Rejected",
             mode="markers",
         ),
@@ -64,11 +63,7 @@ def visualize_data(X, Y):
     fig.write_html("microchip_qa_visualization.html")
 
 
-
 if __name__ == "__main__":
     [X, Y] = load_data("../assignment/ex2data2.txt")
-    (num_samples, _) = X.shape
-    # Add intercept term to X
-    X = np.c_[np.ones(shape=(num_samples, 1)), X]
 
     visualize_data(X, Y)
