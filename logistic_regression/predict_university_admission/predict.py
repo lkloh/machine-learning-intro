@@ -6,9 +6,6 @@ import plotly.graph_objects as go
 import math
 import scipy.optimize as optimize
 
-ALPHA = 0.01
-NUM_ITERATIONS = 1500
-
 
 def load_data(filename):
     file = open(filename, "r")
