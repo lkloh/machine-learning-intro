@@ -139,6 +139,32 @@ def calc_regularized_cost(theta, X, Y, lambda_param):
     return factor1 * sum1 + factor2 * sum2
 
 
+def calc_regularized_gradient_helper(theta, X, Y, feature_idx):
+    (num_samples, num_features) = X.shape
+
+    factor1 = 1.0 / num_samples
+    sum = 0
+    for sample_idx in range(num_samples):
+        xx = X[sample_idx]
+        yy = Y[sample_idx]
+        h = calc_hypothesis(theta, xx)
+        sum += (h - yy) * xx[feature_idx]
+    return factor1 * sum
+
+
+def calc_regularized_gradient(theta, X, Y, lambda_param):
+    (num_samples, num_features) = X.shape
+    gradient = np.zeros(num_features)
+    gradient[0] = calc_regularized_gradient_helper(theta, X, Y, 0)
+    for feature_idx in range(1, num_features):
+        lambda_factor = float(lambda_param) / float(num_samples)
+        gradient[feature_idx] = (
+            calc_regularized_gradient_helper(theta, X, Y, feature_idx)
+            + lambda_factor * theta[feature_idx]
+        )
+    return gradient
+
+
 if __name__ == "__main__":
     [X, Y] = load_data("../assignment/ex2data2.txt")
 
@@ -155,3 +181,6 @@ if __name__ == "__main__":
 
     initial_cost = calc_regularized_cost(initial_theta, mapped_X, Y, lambda_param)
     print("Cost at initial theta (zeros): ", initial_cost)
+
+    initial_grad = calc_regularized_gradient(initial_theta, mapped_X, Y, lambda_param)
+    print("Gradient at initial theta (zeros) - first five values only:", initial_grad[0:5])
