@@ -38,7 +38,45 @@ def map_feature_helper(x1, x2):
     return output
 
 
-def visualize_data(X, Y, optimized_theta=None):
+def visualize_data_with_decision_boundary(X, Y, optimized_theta):
+    X_admitted = X[Y]
+
+    Y_rejected = np.invert(Y)
+    X_rejected = X[Y_rejected]
+
+    min_test1 = min(X[:, 0])
+    max_test1 = max(X[:, 0])
+
+    min_test2 = min(X[:, 1])
+    max_test2 = max(X[:, 1])
+
+    u = np.linspace(min_test1, max_test1, 50)
+    v = np.linspace(min_test2, max_test2, 50)
+
+    z = np.zeros(shape=(len(u), len(v)))
+    for i in range(len(u)):
+        for j in range(len(v)):
+            mapped_x = map_feature_helper(u[i], v[j])
+            z[i][j] = np.dot(mapped_x, optimized_theta)
+
+    fig2 = go.Figure(
+        data=go.Contour(
+            z=z,
+            x=u,
+            y=v,
+            contours=dict(
+                start=0,
+                end=0,
+            ),
+        )
+    )
+
+    fig2.show()
+
+    fig2.write_html("microchip_qa_visualization.html")
+
+
+def visualize_data(X, Y):
     X_admitted = X[Y]
 
     Y_rejected = np.invert(Y)
@@ -72,25 +110,6 @@ def visualize_data(X, Y, optimized_theta=None):
         col=1,
     )
     fig.update_yaxes(title_text="Test 2 Score", row=1, col=1)
-
-    if optimized_theta is not None:
-        min_test1 = min(X[:, 0])
-        max_test1 = max(X[:, 0])
-
-        min_test2 = min(X[:, 1])
-        max_test2 = max(X[:, 1])
-
-        u = np.linspace(min_test1, max_test1, 50)
-        v = np.linspace(min_test2, max_test2, 50)
-
-        z = np.zeros(shape=(len(u), len(v)))
-        for i in range(len(u)):
-            for j in range(len(v)):
-                mapped_x = map_feature_helper(u[i], v[j])
-                z[i][j] = np.dot(mapped_x, optimized_theta)
-
-        fig2 = go.Figure(data=[go.Surface(z=z, x=u, y=v)])
-        fig2.show()
 
     fig.write_html("microchip_qa_visualization.html")
 
@@ -218,4 +237,4 @@ if __name__ == "__main__":
     )
     optimal_theta = result.x
     print("Optimal theta: ", optimal_theta)
-    visualize_data(X, Y, optimal_theta)
+    visualize_data_with_decision_boundary(X, Y, optimal_theta)
