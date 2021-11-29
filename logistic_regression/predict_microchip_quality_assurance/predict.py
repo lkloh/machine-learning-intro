@@ -36,7 +36,7 @@ def visualize_data(X, Y):
         cols=1,
         x_title="Test 1 Score",
     )
-    fig.update_layout(title="Test 2 Score against Test 1 Score")
+    fig.update_layout(title="Microchip QA Test 2 Score against Test 1 Score")
 
     fig.append_trace(
         go.Scatter(
@@ -61,6 +61,18 @@ def visualize_data(X, Y):
     fig.update_yaxes(title_text="Test 2 Score", row=1, col=1)
 
     fig.write_html("microchip_qa_visualization.html")
+
+
+def sigmoid(z):
+    """
+    Logistic regression hypothesis is:
+    h_theta(x) = g(theta^T x)
+              1
+    g(x) = -------
+                -z
+           1 + e
+    """
+    return 1.0 / (1.0 + math.exp(-1.0 * z))
 
 
 def map_features(X1, X2):
@@ -101,8 +113,30 @@ def map_features(X1, X2):
     return output
 
 
-def cost_function(theta, X, Y, lambda_param):
-    pass
+def calc_hypothesis(theta, x):
+    z = np.dot(theta, x)
+    return sigmoid(z)
+
+
+def calc_regularized_cost(theta, X, Y, lambda_param):
+    (num_samples, num_features) = X.shape
+
+    factor1 = 1.0 / num_samples
+    sum1 = 0
+    for sample_idx in range(num_samples):
+        xx = X[sample_idx]
+        yy = Y[sample_idx]
+        h = calc_hypothesis(theta, xx)
+        sum1 -= yy * math.log(h)
+        sum1 -= (1 - yy) * math.log(1 - h)
+
+    factor2 = float(lambda_param) / (2.0 * num_samples)
+    sum2 = 0
+    # do not regularize the theta[0] parameter
+    for feature_idx in range(1, num_features):
+        sum2 += math.pow(theta[feature_idx], 2)
+
+    return factor1 * sum1 + factor2 * sum2
 
 
 if __name__ == "__main__":
@@ -119,5 +153,5 @@ if __name__ == "__main__":
     # Set regularization parameter lambda to 1
     lambda_param = 1
 
-    initial_cost = cost_function(initial_theta, mapped_X, Y, lambda_param)
+    initial_cost = calc_regularized_cost(initial_theta, mapped_X, Y, lambda_param)
     print("Cost at initial theta (zeros): ", initial_cost)
