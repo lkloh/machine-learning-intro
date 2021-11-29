@@ -28,8 +28,8 @@ def load_data(filename):
 
 def map_feature_helper(x1, x2):
     num_features = 28
-    output = np.zeros(num_features)
-    feature_idx = 0
+    output = np.ones(num_features)
+    feature_idx = 1
     for i in range(1, MAP_DEGREE + 1):
         for j in range(0, i + 1):
             r = math.pow(x1, i - j) * math.pow(x2, j)
@@ -64,16 +64,26 @@ def visualize_data_with_decision_boundary(X, Y, optimized_theta):
             z=z,
             x=u,
             y=v,
+            contours_coloring="lines",
+            line_width=2,
             contours=dict(
                 start=0,
                 end=0,
             ),
         )
     )
+    fig2.add_trace(
+        go.Scatter(
+            x=X_admitted[:, 0], y=X_admitted[:, 1], mode="markers", name="Admitted"
+        )
+    )
+    fig2.add_trace(
+        go.Scatter(
+            x=X_rejected[:, 0], y=X_rejected[:, 1], mode="markers", name="Rejected"
+        )
+    )
 
-    fig2.show()
-
-    fig2.write_html("microchip_qa_visualization.html")
+    fig2.write_html("decision_boundary_microchip.html")
 
 
 def visualize_data(X, Y):
@@ -148,7 +158,7 @@ def map_features(X1, X2):
 
     num_samples = len(X1)
     num_features = 28
-    output = np.ones(shape=(num_samples, num_features))
+    output = np.zeros(shape=(num_samples, num_features))
     for sample_idx in range(num_samples):
         xx1 = X1[sample_idx]
         xx2 = X2[sample_idx]
