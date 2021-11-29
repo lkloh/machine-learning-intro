@@ -8,6 +8,8 @@ import scipy.optimize as optimize
 
 NUM_ITERATIONS = 400
 LAMBDA_PARAM = 1
+MAP_DEGREE = 6
+
 
 def load_data(filename):
     file = open(filename, "r")
@@ -22,6 +24,18 @@ def load_data(filename):
         X[i][1] = float(chunks[1])
         Y[i] = True if int(chunks[2]) == 1 else False
     return [X, Y]
+
+
+def map_feature_helper(x1, x2):
+    num_features = 28
+    output = np.zeros(num_features)
+    feature_idx = 0
+    for i in range(1, MAP_DEGREE + 1):
+        for j in range(0, i + 1):
+            r = math.pow(x1, i - j) * math.pow(x2, j)
+            output[feature_idx] = r
+            feature_idx += 1
+    return output
 
 
 def visualize_data(X, Y, optimized_theta=None):
@@ -60,7 +74,23 @@ def visualize_data(X, Y, optimized_theta=None):
     fig.update_yaxes(title_text="Test 2 Score", row=1, col=1)
 
     if optimized_theta is not None:
-        pass
+        min_test1 = min(X[:, 0])
+        max_test1 = max(X[:, 0])
+
+        min_test2 = min(X[:, 1])
+        max_test2 = max(X[:, 1])
+
+        u = np.linspace(min_test1, max_test1, 50)
+        v = np.linspace(min_test2, max_test2, 50)
+
+        z = np.zeros(shape=(len(u), len(v)))
+        for i in range(len(u)):
+            for j in range(len(v)):
+                mapped_x = map_feature_helper(u[i], v[j])
+                z[i][j] = np.dot(mapped_x, optimized_theta)
+
+        fig2 = go.Figure(data=[go.Surface(z=z, x=u, y=v)])
+        fig2.show()
 
     fig.write_html("microchip_qa_visualization.html")
 
@@ -97,21 +127,15 @@ def map_features(X1, X2):
     if len(X1) != len(X2):
         assert "len(X1) != len(X2)"
 
-    degree = 6
-    num_features = 28
     num_samples = len(X1)
-
+    num_features = 28
     output = np.ones(shape=(num_samples, num_features))
     for sample_idx in range(num_samples):
-        feature_index = 1
         xx1 = X1[sample_idx]
         xx2 = X2[sample_idx]
-        for i in range(1, degree + 1):
-            for j in range(0, i + 1):
-                output[sample_idx, feature_index] = math.pow(xx1, i - j) * math.pow(
-                    xx2, j
-                )
-                feature_index += 1
+        result = map_feature_helper(xx1, xx2)
+        print(result)
+        output[sample_idx, :] = result[:]
     return output
 
 
@@ -181,7 +205,9 @@ if __name__ == "__main__":
     initial_cost = calc_regularized_cost(initial_theta, mapped_X, Y, LAMBDA_PARAM)
     print("Cost at initial theta (zeros): ", initial_cost)
     initial_grad = calc_regularized_gradient(initial_theta, mapped_X, Y, LAMBDA_PARAM)
-    print("Gradient at initial theta (zeros) - first five values only:", initial_grad[0:5])
+    print(
+        "Gradient at initial theta (zeros) - first five values only:", initial_grad[0:5]
+    )
 
     result = optimize.minimize(
         fun=calc_regularized_cost,
@@ -192,7 +218,4 @@ if __name__ == "__main__":
     )
     optimal_theta = result.x
     print("Optimal theta: ", optimal_theta)
-
-
-
-
+    visualize_data(X, Y, optimal_theta)
