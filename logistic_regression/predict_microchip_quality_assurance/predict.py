@@ -6,9 +6,8 @@ import plotly.graph_objects as go
 import math
 import scipy.optimize as optimize
 
-ALPHA = 0.01
-NUM_ITERATIONS = 1500
-
+NUM_ITERATIONS = 400
+LAMBDA_PARAM = 1
 
 def load_data(filename):
     file = open(filename, "r")
@@ -25,7 +24,7 @@ def load_data(filename):
     return [X, Y]
 
 
-def visualize_data(X, Y):
+def visualize_data(X, Y, optimized_theta=None):
     X_admitted = X[Y]
 
     Y_rejected = np.invert(Y)
@@ -59,6 +58,9 @@ def visualize_data(X, Y):
         col=1,
     )
     fig.update_yaxes(title_text="Test 2 Score", row=1, col=1)
+
+    if optimized_theta is not None:
+        pass
 
     fig.write_html("microchip_qa_visualization.html")
 
@@ -176,11 +178,21 @@ if __name__ == "__main__":
     # Initialize fitting parameters
     initial_theta = np.zeros(num_features)
 
-    # Set regularization parameter lambda to 1
-    lambda_param = 1
-
-    initial_cost = calc_regularized_cost(initial_theta, mapped_X, Y, lambda_param)
+    initial_cost = calc_regularized_cost(initial_theta, mapped_X, Y, LAMBDA_PARAM)
     print("Cost at initial theta (zeros): ", initial_cost)
-
-    initial_grad = calc_regularized_gradient(initial_theta, mapped_X, Y, lambda_param)
+    initial_grad = calc_regularized_gradient(initial_theta, mapped_X, Y, LAMBDA_PARAM)
     print("Gradient at initial theta (zeros) - first five values only:", initial_grad[0:5])
+
+    result = optimize.minimize(
+        fun=calc_regularized_cost,
+        x0=initial_theta,
+        args=(mapped_X, Y, LAMBDA_PARAM),
+        method="TNC",
+        jac=calc_regularized_gradient,
+    )
+    optimal_theta = result.x
+    print("Optimal theta: ", optimal_theta)
+
+
+
+
