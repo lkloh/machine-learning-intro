@@ -101,7 +101,7 @@ def map_features(X1, X2):
     return output
 
 
-def cost_function(theta, X, Y, lambda_):
+def cost_function(theta, X, Y, lambda_param):
     pass
 
 
@@ -111,5 +111,13 @@ if __name__ == "__main__":
     visualize_data(X, Y)
 
     mapped_X = map_features(X[:, 0], X[:, 1])
+    (num_samples, num_features) = mapped_X.shape
 
-    print(mapped_X)
+    # Initialize fitting parameters
+    initial_theta = np.zeros(num_features)
+
+    # Set regularization parameter lambda to 1
+    lambda_param = 1
+
+    initial_cost = cost_function(initial_theta, mapped_X, Y, lambda_param)
+    print("Cost at initial theta (zeros): ", initial_cost)
