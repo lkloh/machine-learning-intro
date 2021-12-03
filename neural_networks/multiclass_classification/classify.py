@@ -10,9 +10,10 @@ from scipy.io import loadmat
 HANDWRITTEN_DIGITS = loadmat("../assignment/ex3data1.mat")
 
 
-
 if __name__ == "__main__":
     X = np.array(HANDWRITTEN_DIGITS['X'])
-    Y = np.array(HANDWRITTEN_DIGITS['y'])
-    print(X)
+    raw_y = np.array(HANDWRITTEN_DIGITS['y'])
+    Y = [10 if elem == 10 else elem for elem in raw_y]
+
+    (num_samples, num_features) = X.shape
 
