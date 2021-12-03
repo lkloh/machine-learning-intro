@@ -22,6 +22,8 @@ if __name__ == "__main__":
     # Randomly select 100 data points to display
     indices = [idx for idx in range(num_samples)]
     randomly_selected_indices = np.random.choice(indices, size=100, replace=False)
-    randomly_selected_x = X[indices, :]
+    randomly_selected_x = np.zeros(shape=(100, num_features))
+    for i in range(len(randomly_selected_indices)):
+        randomly_selected_x[i,:] = X[randomly_selected_indices[i], :]
 
     display_image(randomly_selected_x)
