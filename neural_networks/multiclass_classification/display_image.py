@@ -9,7 +9,7 @@ NUM_IMAGE_ROWS = 10
 NUM_IMAGE_COLS = 10
 
 
-def display_image(all_images):
+def show_image(all_images):
     pixels_for_display = np.ones(
         shape=(
             PIXELS_IN_HEIGHT * NUM_IMAGE_ROWS,

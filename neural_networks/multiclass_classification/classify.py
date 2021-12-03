@@ -7,7 +7,7 @@ import math
 import scipy.optimize as optimize
 from scipy.io import loadmat
 import random
-from display_image import display_image
+import display_image
 
 HANDWRITTEN_DIGITS = loadmat("../assignment/ex3data1.mat")
 
@@ -21,9 +21,18 @@ if __name__ == "__main__":
 
     # Randomly select 100 data points to display
     indices = [idx for idx in range(num_samples)]
-    randomly_selected_indices = np.random.choice(indices, size=100, replace=False)
-    randomly_selected_x = np.zeros(shape=(100, num_features))
+    randomly_selected_indices = np.random.choice(
+        indices,
+        size=display_image.NUM_IMAGE_ROWS * display_image.NUM_IMAGE_COLS,
+        replace=False,
+    )
+    randomly_selected_x = np.zeros(
+        shape=(
+            display_image.NUM_IMAGE_ROWS * display_image.NUM_IMAGE_COLS,
+            num_features,
+        )
+    )
     for i in range(len(randomly_selected_indices)):
-        randomly_selected_x[i,:] = X[randomly_selected_indices[i], :]
+        randomly_selected_x[i, :] = X[randomly_selected_indices[i], :]
 
-    display_image(randomly_selected_x)
+    display_image.show_image(randomly_selected_x)
