@@ -4,7 +4,7 @@ import math
 
 
 def sigmoid(z):
-    return 1.0 / (1.0 + math.log(-1.0 * z))
+    return 1.0 / (1.0 + math.exp(-1.0 * z))
 
 
 def calc_hypothesis(theta, x):
@@ -31,3 +31,6 @@ def logistic_regression_cost_func(theta, X, Y, lambda_param):
         sum -= (1 - yi) * math.log(1.0 - h)
 
     return factor * sum
+
+def logistic_regression_gradient(theta, X, Y, lambda_param):
+   pass

@@ -34,13 +34,13 @@ if __name__ == "__main__":
     display_image.show_image(randomly_selected_x)
 
     # logistic regression
-    lr_test_case_theta = np.array([-2, -1, 1, 2])
-    lr_test_X =np.array([
-        [1, 0.1, 0.2 ,0.3],
-        [1, 0.4, 0.5, 0.6],
-        [1, 0.7, 0.8 ,0.9],
-        [1, 1.0, 1.1, 1.2],
-        [1, 1.3, 1.4, 1.5],
+    lr_test_case_theta = np.array([-3, -1, 1, 2])
+    lr_test_X = np.array([
+        [1, 0.1, 0.6 , 1.1],
+        [1, 0.2, 0.7, 1.2],
+        [1, 0.3, 0.8 ,1.3],
+        [1, 0.4, 0.9, 1.2],
+        [1, 0.5, 1.0, 1.5],
     ])
     lr_test_Y = np.array([1, 0, 1, 0, 1])
     lr_test_lambda = 3
