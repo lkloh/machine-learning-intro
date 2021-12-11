@@ -3,7 +3,7 @@
 import numpy as np
 from scipy.io import loadmat
 import display_image
-from logistic_regression_cost_function import logistic_regression_cost_func
+from logistic_regression_cost_function import (logistic_regression_cost_func, logistic_regression_gradient)
 
 HANDWRITTEN_DIGITS = loadmat("../assignment/ex3data1.mat")
 
@@ -46,3 +46,6 @@ if __name__ == "__main__":
     lr_test_lambda = 3.0
     lr_test_cost = logistic_regression_cost_func(lr_test_case_theta, lr_test_X, lr_test_Y, lr_test_lambda)
     print('expected cost: ', lr_test_cost)
+
+    grad = logistic_regression_gradient(lr_test_case_theta, lr_test_X, lr_test_Y, lr_test_lambda)
+    print("expected grad: ", grad)

@@ -38,4 +38,12 @@ def logistic_regression_cost_func(theta, X, Y, lambda_param):
     return factor * np.sum(cost_arr) + regularization_term
 
 def logistic_regression_gradient(theta, X, Y, lambda_param):
-   pass
+    (num_samples, num_features) = X.shape
+
+    factor = 1.0 / num_samples
+    z_arr = X @ theta.reshape(num_features, 1)
+    hypothesis_arr = list(map(sigmoid, z_arr))
+    beta_arr = hypothesis_arr - Y
+    result = X.transpose() @ beta_arr
+
+    return factor * result
