@@ -31,10 +31,11 @@ def logistic_regression_cost_func(theta, X, Y, lambda_param):
     second_sum_arr = np.multiply(second_sum_factor, list(map(math.log, second_sum_log)))
     cost_arr = -1 * first_sum_arr - second_sum_arr
 
+    theta_arr = theta[1:num_features]
     regularization_factor = lambda_param / (2.0 * num_samples)
-    regularization_arr = regularization_factor * np.sum(np.multiply(theta, theta))
+    regularization_term = regularization_factor * np.sum(np.multiply(theta_arr, theta_arr))
 
-    return factor * np.sum(cost_arr) + regularization_factor * regularization_arr
+    return factor * np.sum(cost_arr) + regularization_term
 
 def logistic_regression_gradient(theta, X, Y, lambda_param):
    pass
