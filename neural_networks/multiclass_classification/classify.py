@@ -1,13 +1,9 @@
 #!/usr/bin/env python3
 
 import numpy as np
-from plotly.subplots import make_subplots
-import plotly.graph_objects as go
-import math
-import scipy.optimize as optimize
 from scipy.io import loadmat
-import random
 import display_image
+from logistic_regression_cost_function import logistic_regression_cost_func
 
 HANDWRITTEN_DIGITS = loadmat("../assignment/ex3data1.mat")
 
@@ -36,3 +32,16 @@ if __name__ == "__main__":
         randomly_selected_x[i, :] = X[randomly_selected_indices[i], :]
 
     display_image.show_image(randomly_selected_x)
+
+    # logistic regression
+    lr_test_case_theta = np.array([-2, -1, 1, 2])
+    lr_test_X =np.array([
+        [1, 0.1, 0.2 ,0.3],
+        [1, 0.4, 0.5, 0.6],
+        [1, 0.7, 0.8 ,0.9],
+        [1, 1.0, 1.1, 1.2],
+        [1, 1.3, 1.4, 1.5],
+    ])
+    lr_test_Y = np.array([1, 0, 1, 0, 1])
+    lr_test_lambda = 3
+    logistic_regression_cost_func(lr_test_case_theta, lr_test_X, lr_test_Y, lr_test_lambda)
