@@ -34,7 +34,7 @@ if __name__ == "__main__":
     display_image.show_image(randomly_selected_x)
 
     # logistic regression
-    lr_test_case_theta = np.array([-3, -1, 1, 2])
+    lr_test_case_theta = np.array([-2, -1, 1, 2])
     lr_test_X = np.array([
         [1, 0.1, 0.6 , 1.1],
         [1, 0.2, 0.7, 1.2],
@@ -43,6 +43,6 @@ if __name__ == "__main__":
         [1, 0.5, 1.0, 1.5],
     ])
     lr_test_Y = np.array([1, 0, 1, 0, 1])
-    lr_test_lambda = 3
+    lr_test_lambda = 3.0
     lr_test_cost = logistic_regression_cost_func(lr_test_case_theta, lr_test_X, lr_test_Y, lr_test_lambda)
     print('expected cost: ', lr_test_cost)
