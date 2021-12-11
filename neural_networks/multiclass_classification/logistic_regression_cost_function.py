@@ -27,7 +27,7 @@ def logistic_regression_cost_func(theta, X, Y, lambda_param):
         xi = X[sample_idx, :]
 
         h = calc_hypothesis(theta, xi)
-        sum -= yi * h
+        sum -= yi * math.log(h)
         sum -= (1 - yi) * math.log(1.0 - h)
 
     return factor * sum
