@@ -44,4 +44,5 @@ if __name__ == "__main__":
     ])
     lr_test_Y = np.array([1, 0, 1, 0, 1])
     lr_test_lambda = 3
-    logistic_regression_cost_func(lr_test_case_theta, lr_test_X, lr_test_Y, lr_test_lambda)
+    lr_test_cost = logistic_regression_cost_func(lr_test_case_theta, lr_test_X, lr_test_Y, lr_test_lambda)
+    print('expected cost: ', lr_test_cost)

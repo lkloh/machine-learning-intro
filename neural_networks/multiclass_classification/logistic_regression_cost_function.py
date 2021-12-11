@@ -11,6 +11,9 @@ def calc_hypothesis(theta, x):
     z = np.dot(theta, x)
     return sigmoid(z)
 
+def calc_logistic_regression_cost_per_row(y, h):
+    return -1 * y * math.log(h) - (1 - y) * log( 1 - h)
+
 
 def logistic_regression_cost_func(theta, X, Y, lambda_param):
     """
@@ -21,16 +24,13 @@ def logistic_regression_cost_func(theta, X, Y, lambda_param):
 
     factor = 1.0 / num_samples
 
-    sum = 0
-    for sample_idx in range(num_samples):
-        yi = Y[sample_idx]
-        xi = X[sample_idx, :]
-
-        h = calc_hypothesis(theta, xi)
-        sum -= yi * math.log(h)
-        sum -= (1 - yi) * math.log(1.0 - h)
-
-    return factor * sum
+    hypothesis_arr = list(map(sigmoid, X @ theta.reshape(num_features, 1)))
+    first_sum_arr = np.multiply(Y, list(map(math.log, hypothesis_arr)))
+    second_sum_factor = np.ones(num_samples) - Y
+    second_sum_log = np.ones(num_samples) - hypothesis_arr
+    second_sum_arr = np.multiply(second_sum_factor, list(map(math.log, second_sum_log)))
+    cost_arr = -1 * factor * first_sum_arr - factor * second_sum_arr
+    return np.sum(cost_arr)
 
 def logistic_regression_gradient(theta, X, Y, lambda_param):
    pass
