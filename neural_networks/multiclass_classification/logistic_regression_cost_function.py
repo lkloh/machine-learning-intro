@@ -46,4 +46,8 @@ def logistic_regression_gradient(theta, X, Y, lambda_param):
     beta_arr = hypothesis_arr - Y
     result = X.transpose() @ beta_arr
 
-    return factor * result
+    regularization_factor = lambda_param / num_samples
+    theta_arr = theta
+    theta_arr[0] = 0
+
+    return factor * result + regularization_factor * theta_arr
