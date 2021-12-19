@@ -11,8 +11,9 @@ def calc_hypothesis(theta, x):
     z = np.dot(theta, x)
     return sigmoid(z)
 
+
 def calc_logistic_regression_cost_per_row(y, h):
-    return -1 * y * math.log(h) - (1 - y) * log( 1 - h)
+    return -1 * y * math.log(h) - (1 - y) * log(1 - h)
 
 
 def logistic_regression_cost_func(theta, X, Y, lambda_param):
@@ -33,21 +34,25 @@ def logistic_regression_cost_func(theta, X, Y, lambda_param):
 
     theta_arr = theta[1:num_features]
     regularization_factor = lambda_param / (2.0 * num_samples)
-    regularization_term = regularization_factor * np.sum(np.multiply(theta_arr, theta_arr))
+    regularization_term = regularization_factor * np.sum(
+        np.multiply(theta_arr, theta_arr)
+    )
 
     return factor * np.sum(cost_arr) + regularization_term
 
+
 def logistic_regression_gradient(theta, X, Y, lambda_param):
     (num_samples, num_features) = X.shape
+    Y = Y.reshape(num_samples, 1)
 
     factor = 1.0 / num_samples
     z_arr = X @ theta.reshape(num_features, 1)
-    hypothesis_arr = list(map(sigmoid, z_arr))
+    hypothesis_arr = np.array(list(map(sigmoid, z_arr))).reshape(num_samples, 1)
     beta_arr = hypothesis_arr - Y
     result = X.transpose() @ beta_arr
 
     regularization_factor = lambda_param / num_samples
-    theta_arr = theta
+    theta_arr = theta.reshape(num_features, 1)
     theta_arr[0] = 0
 
     return factor * result + regularization_factor * theta_arr
