@@ -3,15 +3,20 @@
 import numpy as np
 from scipy.io import loadmat
 import display_image
-from logistic_regression_cost_function import (logistic_regression_cost_func, logistic_regression_gradient)
+from logistic_regression_cost_function import (
+    logistic_regression_cost_func,
+    logistic_regression_gradient,
+)
+from one_vs_all import one_vs_all_classifier
 
 HANDWRITTEN_DIGITS = loadmat("../assignment/ex3data1.mat")
 
+INPUT_LAYER_SIZE = 400  # 20x20 Input Images of Digits
+NUM_LABELS = 10  # 10 labels, from 1, 2, ..., 9, 10
 
 if __name__ == "__main__":
     X = np.array(HANDWRITTEN_DIGITS["X"])
-    raw_y = np.array(HANDWRITTEN_DIGITS["y"])
-    Y = [10 if elem == 10 else elem for elem in raw_y]
+    Y = np.array(HANDWRITTEN_DIGITS["y"])
 
     (num_samples, num_features) = X.shape
 
@@ -35,17 +40,28 @@ if __name__ == "__main__":
 
     # logistic regression
     lr_test_case_theta = np.array([-2, -1, 1, 2])
-    lr_test_X = np.array([
-        [1, 0.1, 0.6 , 1.1],
-        [1, 0.2, 0.7, 1.2],
-        [1, 0.3, 0.8 ,1.3],
-        [1, 0.4, 0.9, 1.2],
-        [1, 0.5, 1.0, 1.5],
-    ])
+    lr_test_X = np.array(
+        [
+            [1, 0.1, 0.6, 1.1],
+            [1, 0.2, 0.7, 1.2],
+            [1, 0.3, 0.8, 1.3],
+            [1, 0.4, 0.9, 1.2],
+            [1, 0.5, 1.0, 1.5],
+        ]
+    )
     lr_test_Y = np.array([1, 0, 1, 0, 1])
     lr_test_lambda = 3.0
-    lr_test_cost = logistic_regression_cost_func(lr_test_case_theta, lr_test_X, lr_test_Y, lr_test_lambda)
-    print('expected cost: ', lr_test_cost)
+    lr_test_cost = logistic_regression_cost_func(
+        lr_test_case_theta, lr_test_X, lr_test_Y, lr_test_lambda
+    )
+    print("expected cost: ", lr_test_cost)
 
-    grad = logistic_regression_gradient(lr_test_case_theta, lr_test_X, lr_test_Y, lr_test_lambda)
+    grad = logistic_regression_gradient(
+        lr_test_case_theta, lr_test_X, lr_test_Y, lr_test_lambda
+    )
     print("expected grad: ", grad)
+
+    lambda_param = 0.1
+    optimized_theta = one_vs_all_classifier(X, Y, NUM_LABELS, lambda_param)
+    print("\n one vs all classifier: ")
+    print(optimized_theta)
