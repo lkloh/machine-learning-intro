@@ -2,6 +2,7 @@
 
 import numpy as np
 from scipy.io import loadmat
+from predict import predict_classification
 
 HANDWRITTEN_DIGITS = loadmat("../assignment/ex3data1.mat")
 WEIGHTS = loadmat("../assignment/ex3weights.mat")
@@ -15,7 +16,12 @@ if __name__ == "__main__":
     Y = np.array(HANDWRITTEN_DIGITS["y"])
     Y[Y == 10] = 0
 
+    # 25 units in 2nd layer, dimensions 25 x 401
     theta1 = WEIGHTS["Theta1"]
+
+    # 10 output units for the 10 digit classes, size 10 x 26
     theta2 = WEIGHTS["Theta2"]
 
-    print(theta1)
+    p = predict_classification(theta1, theta2, X)
+
+
