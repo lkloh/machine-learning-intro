@@ -10,9 +10,11 @@ def compute_prediction_accuracy(predictions, actual):
     (num_samples, _) = predictions.shape
     num_success = 0
     for sample_idx in range(num_samples):
-        if predictions[sample_idx] == actual[sample_idx]:
+        predicted_label = 10 if predictions[sample_idx] == 0 else predictions[sample_idx]
+        if predicted_label == actual[sample_idx]:
             num_success += 1
     return float(num_success) / float(num_samples) * 100
+
 
 def one_vs_all_predictions(all_theta, X):
     '''
@@ -36,5 +38,4 @@ def one_vs_all_predictions(all_theta, X):
         sample_z = Z[sample_idx,:]
         all_hypothesis = list(map(sigmoid, sample_z))
         predictions[sample_idx] = all_hypothesis.index(max(all_hypothesis))
-
     return predictions
