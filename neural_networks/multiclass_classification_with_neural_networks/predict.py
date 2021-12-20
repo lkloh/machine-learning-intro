@@ -50,6 +50,8 @@ def predict_classification(theta1, theta2, X):
 
     for sample_idx in range(num_samples):
         hypotheses = a3[sample_idx, :]
+        
+        # theta1, theta2 were trained with indexing starting at 1
         p[sample_idx] = np.argmax(hypotheses, axis=0) + 1
 
     return p
