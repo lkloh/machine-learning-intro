@@ -8,6 +8,7 @@ from logistic_regression_cost_function import (
     logistic_regression_gradient,
 )
 from one_vs_all import one_vs_all_classifier
+from predict_one_vs_all import one_vs_all_predictions, compute_prediction_accuracy
 
 HANDWRITTEN_DIGITS = loadmat("../assignment/ex3data1.mat")
 
@@ -17,6 +18,7 @@ NUM_LABELS = 10  # 10 labels, from 1, 2, ..., 9, 10
 if __name__ == "__main__":
     X = np.array(HANDWRITTEN_DIGITS["X"])
     Y = np.array(HANDWRITTEN_DIGITS["y"])
+    Y = Y.astype(int)
 
     (num_samples, num_features) = X.shape
 
@@ -65,3 +67,7 @@ if __name__ == "__main__":
     optimized_theta = one_vs_all_classifier(X, Y, NUM_LABELS, lambda_param)
     print("\n one vs all classifier: ")
     print(optimized_theta)
+
+    predictions = one_vs_all_predictions(optimized_theta, X)
+    accuracy_of_prediction = compute_prediction_accuracy(predictions, Y)
+    print("\n Training Set Accuracy: ", accuracy_of_prediction)
