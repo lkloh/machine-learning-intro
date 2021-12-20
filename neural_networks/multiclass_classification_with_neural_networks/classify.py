@@ -2,7 +2,7 @@
 
 import numpy as np
 from scipy.io import loadmat
-from predict import predict_classification
+from predict import predict_classification, classification_accuracy
 
 HANDWRITTEN_DIGITS = loadmat("../assignment/ex3data1.mat")
 WEIGHTS = loadmat("../assignment/ex3weights.mat")
@@ -23,5 +23,4 @@ if __name__ == "__main__":
     theta2 = WEIGHTS["Theta2"]
 
     p = predict_classification(theta1, theta2, X)
-
-
+    print("Training Set Accuracy: ", classification_accuracy(p, Y))
