@@ -7,7 +7,7 @@ from logistic_regression_cost_function import (
 )
 import scipy.optimize as optimize
 
-MAX_ITERATIONS = 1
+MAX_ITERATIONS = 50
 
 def one_vs_all_classifier(X, Y, num_labels, lambda_param):
     """
