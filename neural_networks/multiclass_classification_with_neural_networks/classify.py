@@ -14,7 +14,6 @@ HIDDEN_LAYER_SIZE = 25
 if __name__ == "__main__":
     X = np.array(HANDWRITTEN_DIGITS["X"])
     Y = np.array(HANDWRITTEN_DIGITS["y"])
-    Y[Y == 10] = 0
 
     # 25 units in 2nd layer, dimensions 25 x 401
     theta1 = WEIGHTS["Theta1"]
@@ -23,4 +22,4 @@ if __name__ == "__main__":
     theta2 = WEIGHTS["Theta2"]
 
     p = predict_classification(theta1, theta2, X)
-    print("Training Set Accuracy: ", classification_accuracy(p, Y))
+    print("Training Set Accuracy percentage:  ", classification_accuracy(p, Y))
