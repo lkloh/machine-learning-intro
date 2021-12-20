@@ -25,7 +25,7 @@ def predict_classification(theta1, theta2, X):
     hidden_layer = add_intercept_term(hidden_layer)
 
     output_layer = hidden_layer @ theta2.transpose()
-    
+
 
     return p
 
