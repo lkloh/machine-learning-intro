@@ -7,6 +7,7 @@ from logistic_regression_cost_function import (
 )
 import scipy.optimize as optimize
 
+MAX_ITERATIONS = 1
 
 def one_vs_all_classifier(X, Y, num_labels, lambda_param):
     """
@@ -33,7 +34,7 @@ def one_vs_all_classifier(X, Y, num_labels, lambda_param):
             args=(X, y_labeled_data, lambda_param),
             method="TNC",
             jac=logistic_regression_gradient,
-            options={"maxiter": 50},
+            options={"maxiter": MAX_ITERATIONS},
         )
         optimal_theta = result.x
         all_theta[i, :] = optimal_theta
