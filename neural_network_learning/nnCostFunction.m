@@ -2,11 +2,11 @@ function [J grad] = nnCostFunction(nn_params, ...
                                    input_layer_size, ...
                                    hidden_layer_size, ...
                                    num_labels, ...
-                                   X, y, lambda)
+                                   X, Y, lambda)
 %NNCOSTFUNCTION Implements the neural network cost function for a two layer
 %neural network which performs classification
 %   [J grad] = NNCOSTFUNCTON(nn_params, hidden_layer_size, num_labels, ...
-%   X, y, lambda) computes the cost and gradient of the neural network. The
+%   X, Y, lambda) computes the cost and gradient of the neural network. The
 %   parameters for the neural network are "unrolled" into the vector
 %   nn_params and need to be converted back into the weight matrices. 
 % 
@@ -23,21 +23,43 @@ Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):en
                  num_labels, (hidden_layer_size + 1));
 
 % Setup some useful variables
-m = size(X, 1);
+num_samples = size(X, 1);
          
 % You need to return the following variables correctly 
 J = 0;
+
 Theta1_grad = zeros(size(Theta1));
 Theta2_grad = zeros(size(Theta2));
 
-% ====================== YOUR CODE HERE ======================
-% Instructions: You should complete the code by working through the
-%               following parts.
-%
+% =================================================================== %
 % Part 1: Feedforward the neural network and return the cost in the
 %         variable J. After implementing Part 1, you can verify that your
 %         cost function computation is correct by verifying the cost
 %         computed in ex4.m
+% =================================================================== %
+
+
+A1 = add_ones(X);
+Z2 = A1 * transpose(Theta1); 
+%A2 = arrayfun(@(z) sigmoid(z), Z2);
+A2 = sigmoid(Z2);
+Z3 = add_ones(A2) * transpose(Theta2); 
+A3 = sigmoid(Z3);
+H = A3;
+
+for sample_idx = 1:num_samples
+    for label_idx = 1:num_labels
+        yy = (label_idx == Y(sample_idx));
+        hypothesis = H(sample_idx, label_idx);
+        J -= yy * log(hypothesis);
+        J -= (1 - yy) * log(1 - hypothesis);
+    end
+end
+
+J *= 1.0 / num_samples;
+
+
+% =================================================================== %
 %
 % Part 2: Implement the backpropagation algorithm to compute the gradients
 %         Theta1_grad and Theta2_grad. You should return the partial derivatives of
@@ -60,7 +82,7 @@ Theta2_grad = zeros(size(Theta2));
 %               backpropagation. That is, you can compute the gradients for
 %               the regularization separately and then add them to Theta1_grad
 %               and Theta2_grad from Part 2.
-%
+% =================================================================== %
 
 
 
