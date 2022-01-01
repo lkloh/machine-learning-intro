@@ -46,14 +46,16 @@ Z3 = add_ones(A2) * transpose(Theta2);
 A3 = arrayfun(@(z) sigmoid(z), Z3);
 H = A3;
 
-
-
-for label_idx = 1:num_labels
-    for sample_idx = 1:num_samples
-        yy = label_idx == Y(label_idx);
-        xx = X(label_idx,:);
+for sample_idx = 1:num_samples
+    for label_idx = 1:num_labels
+        yy = (label_idx == Y(label_idx));
+        hypothesis = H(sample_idx, label_idx);
+        J -= yy * log(hypothesis);
+        J -= (1 - yy) * log(1 - hypothesis);
     end
 end
+
+J *= 1.0 / num_samples;
 
 
 % =================================================================== %
