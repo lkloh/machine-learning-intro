@@ -39,18 +39,19 @@ Theta2_grad = zeros(size(Theta2));
 % =================================================================== %
 
 
-A1 = add_ones(X)
-Z2 = Theta1 * A1 
-A2 = arrayfun(sigmoid, Z2)
-Z3 = Theta2 * add_ones(A2) 
-A3 = arrayfun(sigmoid, Z3)
-H = A3
-disp(H)
+A1 = add_ones(X);
+Z2 = A1 * transpose(Theta1); 
+A2 = arrayfun(@(z) sigmoid(z), Z2);
+Z3 = add_ones(A2) * transpose(Theta2); 
+A3 = arrayfun(@(z) sigmoid(z), Z3);
+H = A3;
+
+
 
 for label_idx = 1:num_labels
     for sample_idx = 1:num_samples
-        %yy = label_idx == Y(label_idx)
-        %xx = X(label_idx,:)
+        yy = label_idx == Y(label_idx);
+        xx = X(label_idx,:);
     end
 end
 
