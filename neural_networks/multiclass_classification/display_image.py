@@ -34,4 +34,4 @@ def show_image(all_images):
     )
     plt.colorbar(display_colors)
 
-    #plt.show()
+    plt.show()
