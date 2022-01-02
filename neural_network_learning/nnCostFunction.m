@@ -99,8 +99,8 @@ for sample_idx = 1:num_samples
     delta2 = temp2 .* [1;grad2]; % delta2 is of size (26 x 1) .* (26 x 1) which is (26 x 1)
 
     % Step 4 - accumulate gradients
-    Theta2_grad = Theta2_grad + delta3 * transpose(a2); % size(10 x 1) * size(1 x 26);
-    Theta1_grad = Theta1_grad + delta2(2:end) * transpose(a1); % size(25 x 1) * size(1 x 401);
+    Theta2_grad = Theta2_grad + delta3 * transpose(a2); % size(10 x 1) * size(1 x 26) which has size(10 x 26);
+    Theta1_grad = Theta1_grad + delta2(2:end) * transpose(a1); % size(25 x 1) * size(1 x 401) which has size(25 x 401);
 end
 
 % Step 5 - obtain unregularized gradient for neural network cost function
@@ -119,7 +119,15 @@ Theta2_grad /= num_samples;
 %               and Theta2_grad from Part 2.
 % =================================================================== %
 
-J += (lambda / (2.0 * num_samples)) * (sum(sum(Theta1.^2)) + sum(sum(Theta2.^2)))
+J += (lambda / (2.0 * num_samples)) * (sum(sum(Theta1.^2)) + sum(sum(Theta2.^2)));
+
+theta1_num_rows = size(Theta1, 1);
+theta1_reg_matrix = [zeros(theta1_num_rows,1) Theta1(:,2:end)];
+Theta1_grad += lambda/num_samples * theta1_reg_matrix;
+
+theta2_num_rows = size(Theta2, 1);
+theta2_reg_matrix = [zeros(theta2_num_rows,1) Theta2(:,2:end)];
+Theta2_grad += lambda/num_samples * theta2_reg_matrix;
 
 % -------------------------------------------------------------
 
