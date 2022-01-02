@@ -76,7 +76,29 @@ J *= 1.0 / num_samples;
 Theta1_grad = zeros(size(Theta1));
 Theta2_grad = zeros(size(Theta2));
 
+for sample_idx = 1:num_samples
+    % Step 1 - Feedforward pass
+    a1 = transpose(X(sample_idx,:));
+    theta1_arr = Theta1(:,sample_idx);
+    z2 = [1; a1] * transpose(theta1_arr);
+    a2 = sigmoid(z2);
+    z3 = add_ones(a2) * transpose(Theta2);
+    a3 = sigmoid(z3);
 
+    % Step 2 - output layer backpropagation
+    delta3 = zeros(num_labels, 1);
+    for label_idx = 1:num_labels
+        yy = (Y(sample_idx) == sample_idx);
+        delta3(label_idx) = a3(label_idx) - yy;
+    end
+
+    % Step 3 - hidden layer backpropagation
+    delta2 = transpose(Theta2) * delta3 .* sigmoidGradient(z2);
+
+    % Step 4 - accumulate gradients
+    Theta2_grad = delta3(2:end) * transpose(a2);
+    Theta1_grad = delta2(2:end) * transpose(a1);
+end
 
 
 % =================================================================== %
