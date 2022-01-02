@@ -89,19 +89,24 @@ for sample_idx = 1:num_samples
     % Step 2 - output layer backpropagation
     delta3 = zeros(num_labels, 1); % delta3 is of size 10 x 1
     for label_idx = 1:num_labels
-        yy = (Y(sample_idx) == sample_idx);
+        yy = (Y(sample_idx) == label_idx);
         delta3(label_idx) = a3(label_idx) - yy;
     end
 
     % Step 3 - hidden layer backpropagation
     grad2 = sigmoidGradient(z2); % grad2 is of size (25 x 1)
     temp2 = (transpose(Theta2)*delta3); % temp2 is of size (26 x 10) * (10 x 1) which is (26 x 1)
-    delta2 = temp2(2:end) .* grad2; % delta2 is of size (25 x 1) .* (25 x 1) which is (25 x 1)
+    delta2 = temp2 .* [1;grad2]; % delta2 is of size (26 x 1) .* (26 x 1) which is (26 x 1)
 
     % Step 4 - accumulate gradients
     Theta2_grad = Theta2_grad + delta3 * transpose(a2); % size(10 x 1) * size(1 x 26);
-    Theta1_grad = Theta1_grad + delta2 * transpose(a1); % size(25 x 1) * size(1 x 401);
+    Theta1_grad = Theta1_grad + delta2(2:end) * transpose(a1); % size(25 x 1) * size(1 x 401);
 end
+
+% Step 5 - obtain unregularized gradient for neural network cost function
+% by dividing the accumulated gradients by 1./num_samples
+Theta1_grad /= num_samples;
+Theta2_grad /= num_samples;
 
 
 % =================================================================== %
