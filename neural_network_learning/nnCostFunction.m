@@ -73,31 +73,34 @@ J *= 1.0 / num_samples;
 % =================================================================== %
 
 
-Theta1_grad = zeros(size(Theta1));
-Theta2_grad = zeros(size(Theta2));
+Theta1_grad = zeros(size(Theta1)); % size(25 * 401)
+Theta2_grad = zeros(size(Theta2)); % size(10 * 26)
 
 for sample_idx = 1:num_samples
     % Step 1 - Feedforward pass
-    a1 = transpose(X(sample_idx,:));
-    theta1_arr = Theta1(:,sample_idx);
-    z2 = [1; a1] * transpose(theta1_arr);
-    a2 = sigmoid(z2);
-    z3 = add_ones(a2) * transpose(Theta2);
-    a3 = sigmoid(z3);
+    xx = transpose(X(sample_idx,:)); % xx is the input vector of size (400 x 1)
+    a1 = [1;xx]; % a1 is of size (401 x 1) 
+
+    z2 = Theta1 * a1; % Theta1 (25 x 401) * a1 (401 x 1) results in z2 (25 x 1)
+    a2 = [1;sigmoid(z2)]; % a2 is of size 26 x 1
+    z3 = Theta2 * a2; % size(10 x 26) * size(26 x 1) results in z3 (10 x 1)
+    a3 = sigmoid(z3); % a3 is of size 10 x 1
 
     % Step 2 - output layer backpropagation
-    delta3 = zeros(num_labels, 1);
+    delta3 = zeros(num_labels, 1); % delta3 is of size 10 x 1
     for label_idx = 1:num_labels
         yy = (Y(sample_idx) == sample_idx);
         delta3(label_idx) = a3(label_idx) - yy;
     end
 
     % Step 3 - hidden layer backpropagation
-    delta2 = transpose(Theta2) * delta3 .* sigmoidGradient(z2);
+    grad2 = sigmoidGradient(z2); % grad2 is of size (25 x 1)
+    temp2 = (transpose(Theta2)*delta3); % temp2 is of size (26 x 10) * (10 x 1) which is (26 x 1)
+    delta2 = temp2(2:end) .* grad2; % delta2 is of size (25 x 1) .* (25 x 1) which is (25 x 1)
 
     % Step 4 - accumulate gradients
-    Theta2_grad = delta3(2:end) * transpose(a2);
-    Theta1_grad = delta2(2:end) * transpose(a1);
+    Theta2_grad = Theta2_grad + delta3 * transpose(a2); % size(10 x 1) * size(1 x 26);
+    Theta1_grad = Theta1_grad + delta2 * transpose(a1); % size(25 x 1) * size(1 x 401);
 end
 
 
