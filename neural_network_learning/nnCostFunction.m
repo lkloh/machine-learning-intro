@@ -25,12 +25,6 @@ Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):en
 % Setup some useful variables
 num_samples = size(X, 1);
          
-% You need to return the following variables correctly 
-J = 0;
-
-Theta1_grad = zeros(size(Theta1));
-Theta2_grad = zeros(size(Theta2));
-
 % =================================================================== %
 % Part 1: Feedforward the neural network and return the cost in the
 %         variable J. After implementing Part 1, you can verify that your
@@ -38,6 +32,8 @@ Theta2_grad = zeros(size(Theta2));
 %         computed in ex4.m
 % =================================================================== %
 
+
+J = 0;
 
 A1 = add_ones(X);
 Z2 = A1 * transpose(Theta1); 
@@ -58,7 +54,6 @@ end
 
 J *= 1.0 / num_samples;
 
-
 % =================================================================== %
 %
 % Part 2: Implement the backpropagation algorithm to compute the gradients
@@ -68,13 +63,23 @@ J *= 1.0 / num_samples;
 %         that your implementation is correct by running checkNNGradients
 %
 %         Note: The vector y passed into the function is a vector of labels
-%               containing values from 1..K. You need to map this vector into a 
+%               containing values from 1...K. You need to map this vector into a 
 %               binary vector of 1's and 0's to be used with the neural network
 %               cost function.
 %
 %         Hint: We recommend implementing backpropagation using a for-loop
 %               over the training examples if you are implementing it for the 
 %               first time.
+% =================================================================== %
+
+
+Theta1_grad = zeros(size(Theta1));
+Theta2_grad = zeros(size(Theta2));
+
+
+
+
+% =================================================================== %
 %
 % Part 3: Implement regularization with the cost function and gradients.
 %
@@ -84,23 +89,7 @@ J *= 1.0 / num_samples;
 %               and Theta2_grad from Part 2.
 % =================================================================== %
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+J += (lambda / (2.0 * num_samples)) * (sum(sum(Theta1.^2)) + sum(sum(Theta2.^2)))
 
 % -------------------------------------------------------------
 
