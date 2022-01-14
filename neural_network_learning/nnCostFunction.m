@@ -79,8 +79,7 @@ Theta2_grad = zeros(size(Theta2)); % size(10 * 26)
 for sample_idx = 1:num_samples
     % Step 1 - Feedforward pass
     xx = transpose(X(sample_idx,:)); % xx is the input vector of size (400 x 1)
-    a1 = [1;xx]; % a1 is of size (401 x 1) 
-
+    a1 = [1;xx]; % a1 is of size (401 x 1)
     z2 = Theta1 * a1; % Theta1 (25 x 401) * a1 (401 x 1) results in z2 (25 x 1)
     a2 = [1;sigmoid(z2)]; % a2 is of size 26 x 1
     z3 = Theta2 * a2; % size(10 x 26) * size(26 x 1) results in z3 (10 x 1)
