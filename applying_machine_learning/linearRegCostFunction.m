@@ -6,7 +6,8 @@ function [J, grad] = linearRegCostFunction(X, y, theta, lambda)
 %   data points in X and y. Returns the cost in J and the gradient in grad
 
 % Initialize some useful values
-m = length(y); % number of training examples
+num_samples = length(y); % number of training examples
+num_features = length(theta) - 1;
 
 % You need to return the following variables correctly 
 J = 0;
@@ -18,6 +19,21 @@ grad = zeros(size(theta));
 %
 %               You should set J to the cost and grad to the gradient.
 %
+
+J_error_1 = 0;
+
+for sample_idx = 1:num_samples
+    xx = [1; reshape(X(sample_idx),[num_features,1])];
+    yy = y(sample_idx);
+
+    h = dot(theta, xx);
+    J_error_1 += (h - yy)^2;
+end
+
+J_error_2 = theta(2:end).^2;
+J = 1.0/(2*num_samples) * J_error_1 + lambda/(2*num_samples) * J_error_2;
+
+
 
 
 
