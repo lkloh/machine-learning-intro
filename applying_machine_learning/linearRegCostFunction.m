@@ -21,16 +21,16 @@ grad = zeros(size(theta));
 %
 
 J_error_1 = 0;
-
 for sample_idx = 1:num_samples
-    xx = [1; reshape(X(sample_idx),[num_features,1])];
+    xx = X(sample_idx,:);
     yy = y(sample_idx);
 
     h = dot(theta, xx);
     J_error_1 += (h - yy)^2;
 end
 
-J_error_2 = theta(2:end).^2;
+J_error_2 = sum(theta(2:end).^2);
+
 J = 1.0/(2*num_samples) * J_error_1 + lambda/(2*num_samples) * J_error_2;
 
 
