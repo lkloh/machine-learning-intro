@@ -11,24 +11,15 @@ num_features = length(theta);
 
 % ============== Cost of regularized linear regression ============== %
 
-J_error_1 = 0;
-for sample_idx = 1:num_samples
-    xx = X(sample_idx,:);
-    yy = y(sample_idx);
+hypothesis = X * theta;
+error = (hypothesis - y);
 
-    h = dot(theta, xx);
-    J_error_1 += (h - yy)^2;
-end
-
-J_error_2 = sum(theta(2:end).^2);
-
-J = 1.0/(2*num_samples) * J_error_1 + lambda/(2*num_samples) * J_error_2;
+J = 1.0/(2*num_samples) * sum(error.^2) + lambda/(2*num_samples) * sum(theta(2:end).^2);
 
 % ============== Regularized linear regression gradient ============== %
 
 grad = zeros(num_features,1);
-hypothesis = X * theta;
-error = (hypothesis - y);
+
 
 grad(1) = (1/num_samples) * dot(error, X(:,1));
 
