@@ -28,23 +28,11 @@ J = 1.0/(2*num_samples) * J_error_1 + lambda/(2*num_samples) * J_error_2;
 
 grad = zeros(num_features,1);
 hypothesis = X * theta;
+error = (hypothesis - y);
 
-for feature_idx = 1:num_features
-    xx = X(sample_idx,:);
-    yy = y(sample_idx);
+grad(1) = (1/num_samples) * dot(error, X(:,1));
 
-    error_sum = 0;
-    for sample_idx = 1:num_samples
-        h = dot(theta, xx);
-        error_sum += ((h - yy) * xx(feature_idx));
-    end
-
-    grad(feature_idx) = (1.0/num_samples) * error_sum;
-
-    if feature_idx > 1
-        grad(feature_idx) += ((lambda/num_samples) * theta(feature_idx));
-    end
-end
+grad(2:end) = (1/num_samples) * transpose(error) * X(:,2:end) + (lambda/num_samples) * theta(2:end);
 
 % =========================================================================
 
