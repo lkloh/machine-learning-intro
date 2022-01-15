@@ -215,6 +215,5 @@ for i = 1:length(lambda_vec)
 	fprintf(' %f\t%f\t%f\n', ...
             lambda_vec(i), error_train(i), error_val(i));
 end
-
 fprintf('Program paused. Press enter to continue.\n');
 pause;
