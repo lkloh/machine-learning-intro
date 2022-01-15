@@ -23,7 +23,7 @@ grad = zeros(num_features,1);
 
 grad(1) = (1/num_samples) * dot(error, X(:,1));
 
-grad(2:end) = (1/num_samples) * transpose(error) * X(:,2:end) + (lambda/num_samples) * theta(2:end);
+grad(2:end) = (1/num_samples) * (transpose(X(:,2:end)) * error) + (lambda/num_samples) * theta(2:end);
 
 % =========================================================================
 
