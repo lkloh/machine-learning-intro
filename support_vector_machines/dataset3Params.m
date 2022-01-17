@@ -40,6 +40,7 @@ for C_idx=1:numel(candidate_C_array)
         if (prediction_error < best_prediction_error)
             C = candidate_C;
             sigma = candidate_sigma;
+            best_prediction_error = prediction_error;
         end
     end
 end
