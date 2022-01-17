@@ -1,14 +1,14 @@
-function x = emailFeatures(word_indices)
+function feature_vec = emailFeatures(word_indices)
 %EMAILFEATURES takes in a word_indices vector and produces a feature vector
 %from the word indices
 %   x = EMAILFEATURES(word_indices) takes in a word_indices vector and 
 %   produces a feature vector from the word indices. 
 
 % Total number of words in the dictionary
-n = 1899;
+num_words_in_dict = 1899;
 
 % You need to return the following variables correctly.
-x = zeros(n, 1);
+feature_vec = zeros(num_words_in_dict, 1);
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: Fill in this function to return a feature vector for the
@@ -44,16 +44,14 @@ x = zeros(n, 1);
 %              index 60) appears in the email, then x(60) = 1. The feature
 %              vector should look like:
 %
-%              x = [ 0 0 0 0 1 0 0 0 ... 0 0 0 0 1 ... 0 0 0 1 0 ..];
+%              feature_vec = [ 0 0 0 0 1 0 0 0 ... 0 0 0 0 1 ... 0 0 0 1 0 ..];
 %
 %
 
-
-
-
-
-
-
+for idx = 1:numel(word_indices)
+    word_index = word_indices(idx);
+    feature_vec(word_index) = 1;
+end
 
 % =========================================================================
     
