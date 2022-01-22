@@ -5,11 +5,11 @@ function [U, S] = pca(X)
 %
 
 % Useful values
-[m, n] = size(X);
+[num_samples, num_features] = size(X);
 
 % You need to return the following variables correctly.
-U = zeros(n);
-S = zeros(n);
+U = zeros(num_features);
+S = zeros(num_features);
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: You should first compute the covariance matrix. Then, you
@@ -20,10 +20,9 @@ S = zeros(n);
 %       number of examples).
 %
 
+covariance = (1.0/num_samples) * X' * X;
 
-
-
-
+[U, S, V] = svd(covariance);
 
 
 % =========================================================================
