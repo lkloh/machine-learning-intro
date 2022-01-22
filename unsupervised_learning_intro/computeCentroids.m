@@ -11,10 +11,10 @@ function centroids = computeCentroids(X, idx, K)
 %
 
 % Useful variables
-[m n] = size(X);
+[NUM_SAMPLES NUM_FEATURES] = size(X);
 
 % You need to return the following variables correctly.
-centroids = zeros(K, n);
+centroids = zeros(K, NUM_FEATURES);
 
 
 % ====================== YOUR CODE HERE ======================
@@ -26,10 +26,12 @@ centroids = zeros(K, n);
 % Note: You can use a for-loop over the centroids to compute this.
 %
 
-
-
-
-
+for cluster_idx=1:K
+	indices_for_cluster = idx==cluster_idx;
+	num_samples_in_cluster = sum(indices_for_cluster);
+	summed_result = X' * indices_for_cluster;
+	centroids(cluster_idx, :) = 1.0/num_samples_in_cluster * summed_result;
+end
 
 
 

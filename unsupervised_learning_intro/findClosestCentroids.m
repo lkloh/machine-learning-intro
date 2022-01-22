@@ -8,8 +8,10 @@ function idx = findClosestCentroids(X, centroids)
 % Set K
 K = size(centroids, 1);
 
+NUM_SAMPLES = size(X,1);
+
 % You need to return the following variables correctly.
-idx = zeros(size(X,1), 1);
+idx = zeros(NUM_SAMPLES, 1);
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: Go over every example, find its closest centroid, and store
@@ -21,7 +23,23 @@ idx = zeros(size(X,1), 1);
 % Note: You can use a for-loop over the examples to compute this.
 %
 
+for sample_idx = 1:NUM_SAMPLES
+	sample_vec = X(sample_idx,:);
 
+	min_cost = intmax;
+	min_cost_cluster = 1;
+	for cluster_idx = 1:K
+		centroid_vec = centroids(cluster_idx,:);
+
+		current_cost = sum((sample_vec - centroid_vec).^2);
+		if current_cost < min_cost
+			min_cost = current_cost;
+			min_cost_cluster = cluster_idx;
+		end
+	end
+
+	idx(sample_idx) = min_cost_cluster;
+end
 
 
 
