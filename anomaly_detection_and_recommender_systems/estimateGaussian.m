@@ -8,11 +8,11 @@ function [mu sigma2] = estimateGaussian(X)
 % 
 
 % Useful variables
-[m, n] = size(X);
+[num_samples, num_features] = size(X);
 
 % You should return these values correctly
-mu = zeros(n, 1);
-sigma2 = zeros(n, 1);
+mu = zeros(num_features, 1);
+sigma2 = zeros(num_features, 1);
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: Compute the mean of the data and the variances
@@ -21,12 +21,11 @@ sigma2 = zeros(n, 1);
 %               should contain variance of the i-th feature.
 %
 
+mu = mean(X)';
 
 
-
-
-
-
+subtracted = X - ones(size(X)) * diag(mu);
+sigma2 = (1.0/num_samples) * sum(subtracted.^2)';
 
 
 
