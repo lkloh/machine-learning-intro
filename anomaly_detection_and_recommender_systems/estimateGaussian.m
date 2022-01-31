@@ -27,6 +27,7 @@ mu = mean(X)';
 subtracted = X - ones(size(X)) * diag(mu);
 sigma2 = (1.0/num_samples) * sum(subtracted.^2)';
 
+fprintf('\nsigma2: %f, var(X): %f \n', sigma2, var(X));
 
 
 % =============================================================
