@@ -42,12 +42,20 @@ Theta_grad = zeros(size(Theta));
 
 
 
-diff = ((Theta * X')' - Y);
+diff = ((Theta * X')' - Y) .* R; % num_movies x num_users 
 
 
-J = 1/2.0 * sum(sum((diff .* R).^2));
+J = 1/2.0 * sum(sum((diff).^2)); % cost
 
+disp(diff .* R);
+disp('\n');
+disp(X);
 
+% (num_movies x num_users) * (num_users x num_features)
+X_grad = diff * Theta; % (num_movies x num_features)
+
+% (num_users x num_movies) * (num_movies x num_features)
+Theta_grad = diff' * X; % num_users x num_features
 
 
 
