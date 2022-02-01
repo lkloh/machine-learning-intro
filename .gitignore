@@ -3,3 +3,4 @@
 **/*.pyc
 **/*.html
 **/__pycache__
+**/octave-workspace
